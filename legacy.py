@@ -40,8 +40,10 @@ def hist_boards():
     for l in result:
         resultlist.append(len(result[l]))
     count = {}
-    for m in range(1,21):
-        count [m] = resultlist.count(m)
+    for i in range(1,max(resultlist)+1):
+        count[i] =0
+    for m in resultlist:
+        count[m] +=1
     return count # remove later, understand warning
 
 if __name__ == '__main__':
