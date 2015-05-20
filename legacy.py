@@ -46,5 +46,26 @@ def hist_boards():
         count[m] +=1
     return count # remove later, understand warning
 
+
+def hist_boards_akshay():
+    """
+    Compute histogram of board counts, store as a list, max board_count = 20, ignore > 20, for first 100,000 users
+    :return:
+    """
+    pinterest = gzip.open('data/pinterest.gz')
+    histogram = {}
+    for i,line in enumerate(pinterest):
+        u, b = extract_line(line)
+        c = len(b)
+        if c in histogram:
+            histogram[c] += 1
+        else:
+            histogram[c] = 1 # !important set 1
+        # histogram.setdefault(c,0)
+        # histogram[c] += 1
+        if i >= 10**7:
+            break
+    print [round(100.0*histogram[k]/float(i+1),2) for k in xrange(1,6)],len(histogram),i,max(histogram.keys())
+
 if __name__ == '__main__':
-    hist_boards()
+    hist_boards_akshay()
