@@ -4,6 +4,7 @@ import xml.etree.ElementTree
 import urllib
 import gzip
 import os
+import pymongo
 
 def parse_link(link):
     #download xml file;
@@ -32,16 +33,20 @@ def parse_gz(lst):
 def slicelink(lst):
     return lst[0].rsplit('/')[3], lst[0].rsplit('/')[4], lst[1]
 
-def main(fileurl,n=100):
+def main(fileurl,n=1):
     linklist = parse_link(fileurl)
     gzfiles = {}
-    data = []
+    uri = "mongodb://aaditya:sangam@ds031972.mongolab.com:31972/pindb"
+    client = pymongo.MongoClient(uri)
     for i in xrange(0,n):
         gzfiles[i] = parse_gz(linklist[i])
+        docs = []
         for j in xrange(0, len(gzfiles[i])):
-            data.append(slicelink(gzfiles[i][j]))
-    return data
+            docs.append({'user' : slicelink(gzfiles[i][j])[0], 'board' : slicelink(gzfiles[i][j])[1], 'date' : slicelink(gzfiles[i][j])[2]})
+        client['pindb']['test'].insert_many(docs)
+
+
 
 if __name__ == '__main__':
     fileurl = 'https://www.pinterest.com/v2_sitemaps/www_v2_board_sitemap.xml'
-    main(fileurl,500)
+    main(fileurl,10)
