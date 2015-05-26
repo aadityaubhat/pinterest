@@ -5,6 +5,7 @@ import urllib
 import gzip
 import os
 import pymongo
+import time
 
 def parse_link(link):
     #download xml file;
@@ -35,18 +36,19 @@ def slicelink(lst):
 
 def main(fileurl,n=1):
     linklist = parse_link(fileurl)
-    gzfiles = {}
-    uri = "mongodb://aaditya:sangam@ds031972.mongolab.com:31972/pindb"
+    uri = "mongodb://aaditya:sangam@localhost:27017/pindb"
     client = pymongo.MongoClient(uri)
-    for i in xrange(0,n):
-        gzfiles[i] = parse_gz(linklist[i])
+    for i in xrange(366,n):
+        gzfiles = parse_gz(linklist[i])
         docs = []
-        for j in xrange(0, len(gzfiles[i])):
-            docs.append({'user' : slicelink(gzfiles[i][j])[0], 'board' : slicelink(gzfiles[i][j])[1], 'date' : slicelink(gzfiles[i][j])[2]})
+        for j in xrange(0, len(gzfiles)):
+            docs.append({'user' : slicelink(gzfiles[j])[0], 'board' : slicelink(gzfiles[j])[1], 'date' : slicelink(gzfiles[j])[2]})
         client['pindb']['test'].insert_many(docs)
 
 
 
 if __name__ == '__main__':
+    start = time.time()
     fileurl = 'https://www.pinterest.com/v2_sitemaps/www_v2_board_sitemap.xml'
-    main(fileurl,10)
+    main(fileurl,500)
+    print 'It took', time.time()-start, 'seconds.'
