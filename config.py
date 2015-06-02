@@ -1,4 +1,6 @@
 __author__ = 'aaditya'
-HOST = ""
-PORT = ""
-DBNAME = ""
+HOST = "localhost"
+PORT = "27017"
+DBNAME = "pindb"
+USERNAME = "aaditya"
+PASSWORD = "sangam"
