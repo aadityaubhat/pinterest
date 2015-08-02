@@ -77,6 +77,8 @@ def main(fileurl, sysarg):
             for j in xrange(0, len(gzfiles)):
                 docs.append({'user' : slicelink(gzfiles[j])[0], 'board' : slicelink(gzfiles[j])[1], 'date' : slicelink(gzfiles[j])[2]})
             DB['pindb']['user_board_date'].insert_many(docs)
+    DB.close()
+
 
 
 

@@ -1,7 +1,7 @@
 __author__ = 'aaditya'
 import gzip
 import config
-import entity
+
 
 
 def extract_line(line):
